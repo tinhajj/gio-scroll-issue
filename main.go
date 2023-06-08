@@ -1,8 +1,8 @@
 package main
 
 import (
+	"fmt"
 	"image"
-	"image/color"
 	"log"
 	"os"
 
@@ -11,8 +11,6 @@ import (
 	"gioui.org/io/system"
 	"gioui.org/layout"
 	"gioui.org/op"
-	"gioui.org/op/clip"
-	"gioui.org/op/paint"
 	"gioui.org/unit"
 	"gioui.org/widget"
 	"gioui.org/widget/material"
@@ -26,10 +24,15 @@ type Component struct {
 	clickables []widget.Clickable
 }
 
-func (c Component) Layout(theme *material.Theme, gtx C) D {
-	return material.List(theme, &c.list).Layout(gtx, 3, func(gtx C, i int) D {
+func (c *Component) Layout(theme *material.Theme, gtx C) D {
+	return material.List(theme, &c.list).Layout(gtx, len(c.clickables), func(gtx C, i int) D {
 		clickable := &c.clickables[i]
-		return material.Button(theme, clickable, "Long Text Button !!!!!!!").Layout(gtx)
+		var label string
+		label = "FRONT Long Text Button !!!!!!!!!!! END"
+		if i%2 == 0 {
+			label = "FRONT Long Text Button END"
+		}
+		return material.Button(theme, clickable, label).Layout(gtx)
 	})
 }
 
@@ -37,7 +40,7 @@ func main() {
 	go func() {
 		w := app.NewWindow(
 			app.Title("Canvas"),
-			app.Size(unit.Dp(200), unit.Dp(50)),
+			app.Size(unit.Dp(200), unit.Dp(350)),
 		)
 
 		if err := draw(w); err != nil {
@@ -54,13 +57,7 @@ func draw(w *app.Window) error {
 
 	var theme = material.NewTheme(gofont.Collection())
 	var mycomp = &Component{
-		list: widget.List{
-			Scrollbar: widget.Scrollbar{},
-			List: layout.List{
-				Axis: layout.Vertical,
-			},
-		},
-		clickables: []widget.Clickable{{}, {}, {}},
+		clickables: []widget.Clickable{{}, {}, {}, {}, {}, {}},
 	}
 
 	for windowEvent := range w.Events() {
@@ -70,13 +67,11 @@ func draw(w *app.Window) error {
 			gtx := layout.NewContext(&ops, e)
 			gtx.Constraints.Min = image.Pt(0, 0)
 
-			dim := mycomp.Layout(theme, gtx)
-			rect := clip.Rect{
-				Max: dim.Size,
+			for _, e := range gtx.Events(3) {
+				fmt.Println(e)
 			}
-			s := rect.Push(gtx.Ops)
-			paint.Fill(gtx.Ops, color.NRGBA{R: 255, A: 50})
-			s.Pop()
+
+			mycomp.Layout(theme, gtx)
 
 			e.Frame(gtx.Ops)
 		case system.DestroyEvent:
