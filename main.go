@@ -5,6 +5,7 @@ import (
 	"image"
 	"log"
 	"os"
+	"scroll/custom"
 
 	"gioui.org/app"
 	"gioui.org/font/gofont"
@@ -20,12 +21,12 @@ type C = layout.Context
 type D = layout.Dimensions
 
 type Component struct {
-	list       widget.List
+	list       List
 	clickables []widget.Clickable
 }
 
 func (c *Component) Layout(theme *material.Theme, gtx C) D {
-	return material.List(theme, &c.list).Layout(gtx, len(c.clickables), func(gtx C, i int) D {
+	return custom.List(theme, &c.list).Layout(gtx, len(c.clickables), func(gtx C, i int) D {
 		clickable := &c.clickables[i]
 		var label string
 		label = "FRONT Long Text Button !!!!!!!!!!! END"
