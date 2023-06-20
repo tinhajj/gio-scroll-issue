@@ -4,6 +4,7 @@ import (
 	"image"
 	"image/color"
 	"math"
+	"scroll/customWidget"
 
 	"gioui.org/io/pointer"
 	"gioui.org/layout"
@@ -11,7 +12,6 @@ import (
 	"gioui.org/op/clip"
 	"gioui.org/op/paint"
 	"gioui.org/unit"
-	"gioui.org/widget"
 	"gioui.org/widget/material"
 )
 
@@ -72,14 +72,14 @@ type ScrollIndicatorStyle struct {
 
 // ScrollbarStyle configures the presentation of a scrollbar.
 type ScrollbarStyle struct {
-	Scrollbar *widget.Scrollbar
+	Scrollbar *customWidget.Scrollbar
 	Track     ScrollTrackStyle
 	Indicator ScrollIndicatorStyle
 }
 
 // Scrollbar configures the presentation of a scrollbar using the provided
 // theme and state.
-func Scrollbar(th *material.Theme, state *widget.Scrollbar) ScrollbarStyle {
+func Scrollbar(th *material.Theme, state *customWidget.Scrollbar) ScrollbarStyle {
 	lightFg := th.Palette.Fg
 	lightFg.A = 150
 	darkFg := lightFg
@@ -228,13 +228,13 @@ const (
 
 // ListStyle configures the presentation of a layout.List with a scrollbar.
 type ListStyle struct {
-	state *widget.List
+	state *customWidget.List
 	ScrollbarStyle
 	AnchorStrategy
 }
 
 // List constructs a ListStyle using the provided theme and state.
-func List(th *material.Theme, state *widget.List) ListStyle {
+func List(th *material.Theme, state *customWidget.List) ListStyle {
 	return ListStyle{
 		state:          state,
 		ScrollbarStyle: Scrollbar(th, &state.Scrollbar),

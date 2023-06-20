@@ -6,6 +6,7 @@ import (
 	"log"
 	"os"
 	"scroll/custom"
+	"scroll/customWidget"
 
 	"gioui.org/app"
 	"gioui.org/font/gofont"
@@ -21,7 +22,7 @@ type C = layout.Context
 type D = layout.Dimensions
 
 type Component struct {
-	list       List
+	list       customWidget.List
 	clickables []widget.Clickable
 }
 
