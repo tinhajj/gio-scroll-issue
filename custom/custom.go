@@ -182,6 +182,8 @@ func (s ScrollbarStyle) layout(gtx layout.Context, axis layout.Axis, viewportSta
 				if viewStart+indicatorLen > trackLen {
 					viewStart = trackLen - indicatorLen
 				}
+
+				// LOOK HERE FOR DRAG OF SCROLL
 				indicatorDims := axis.Convert(image.Point{
 					X: indicatorLen,
 					Y: gtx.Dp(s.Indicator.MinorWidth),
@@ -249,7 +251,6 @@ func (l ListStyle) Layout(gtx layout.Context, length int, w layout.ListElement) 
 	barWidth := gtx.Dp(l.Width())
 
 	if l.AnchorStrategy == Occupy {
-
 		// Reserve space for the scrollbar using the gtx constraints.
 		max := l.state.Axis.Convert(gtx.Constraints.Max)
 		min := l.state.Axis.Convert(gtx.Constraints.Min)
